@@ -1,4 +1,4 @@
-package ing.boykiss.blocksmith;
+package ing.boykiss.testserver;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -9,6 +9,9 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+
+import java.util.Optional;
 
 public class TestServer {
     public static void main(String[] args) {
@@ -25,6 +28,9 @@ public class TestServer {
             Player player = event.getPlayer();
             event.setSpawningInstance(instance);
             player.setRespawnPoint(new Pos(0, 10, 0));
+
+            Optional<ItemStack> optionalItemStack = Items.DIA.createStack(1);
+            optionalItemStack.ifPresent(player.getInventory()::addItemStack);
         });
 
         server.start("127.0.0.1", 25565);

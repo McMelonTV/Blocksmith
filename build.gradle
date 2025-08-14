@@ -12,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    implementation "org.javatuples:javatuples:1.2"
+
     implementation "net.minestom:minestom:2025.08.12-1.21.8"
 
     implementation "team.unnamed:creative-api:1.7.3"
