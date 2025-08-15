@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class BlocksmithBlock implements Keyed {
     public static final DynamicRegistry<BlocksmithBlock> BLOCKS = new DynamicRegistry<>();
@@ -93,12 +94,13 @@ public class BlocksmithBlock implements Keyed {
             builder.itemModel("blocksmith_blocks_" + blocksmithBlockId.asString());
             meta.setItemStack(builder.build());
             meta.setTranslation(new Vec(0.5));
-            meta.setScale(Vec.ONE.add(0.0001));
-            meta.setBrightness(instance.getBlockLight(blockPos.blockX(), blockPos.blockY(), blockPos.blockZ()) + 1, instance.getSkyLight(blockPos.blockX(), blockPos.blockY(), blockPos.blockZ()) + 1);
-            displayEntity.setGlowing(true);
+            meta.setScale(Vec.ONE.add(0.001));
+            meta.setBrightnessOverride(255);
+//            displayEntity.setGlowing(true);
+            displayEntity.setNoGravity(true);
             displayEntity.setInstance(instance, blockPos);
 
-            instance.setBlock(blockPos, block.withTag(BLOCKSMITH_BLOCK_DISPLAY_ENTITY_UUID_TAG, displayEntity.getUuid()).withHandler(DisplayBlockDestroyHandler.INSTANCE));
+            CompletableFuture.runAsync(() -> instance.setBlock(blockPos, block.withTag(BLOCKSMITH_BLOCK_DISPLAY_ENTITY_UUID_TAG, displayEntity.getUuid()).withHandler(DisplayBlockDestroyHandler.INSTANCE)));
         }
 
         @Override

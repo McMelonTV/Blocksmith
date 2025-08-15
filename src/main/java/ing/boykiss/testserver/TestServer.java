@@ -9,7 +9,6 @@ import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.LightingChunk;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Optional;
@@ -22,7 +21,8 @@ public class TestServer {
         InstanceContainer instance = instanceManager.createInstanceContainer();
 
         instance.setChunkSupplier(LightingChunk::new);
-        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 10, Block.STONE));
+//        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 10, Block.STONE));
+        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 1, Blocks.DISPLAY.getBlock()));
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
