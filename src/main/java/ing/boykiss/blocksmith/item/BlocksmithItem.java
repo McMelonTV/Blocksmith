@@ -25,14 +25,24 @@ public class BlocksmithItem implements Keyed {
     private final Material baseMaterial;
     private final DataComponentMap baseComponents;
 
-    public BlocksmithItem(Key id, Material baseMaterial, DataComponentMap baseComponents) {
+    private BlocksmithItem(Key id, Material baseMaterial, DataComponentMap baseComponents) {
         this.id = id;
         this.baseMaterial = baseMaterial;
         this.baseComponents = baseComponents;
     }
 
-    public BlocksmithItem(Key id, Material baseMaterial) {
-        this(id, baseMaterial, DataComponentMap.EMPTY);
+    /**
+     * @throws UnsupportedOperationException if id already exists
+     */
+    public static BlocksmithItem create(Key id, Material baseMaterial, DataComponentMap baseComponents) throws UnsupportedOperationException {
+        return ITEMS.register(new BlocksmithItem(id, baseMaterial, baseComponents));
+    }
+
+    /**
+     * @throws UnsupportedOperationException if id already exists
+     */
+    public static BlocksmithItem create(Key id, Material baseMaterial) throws UnsupportedOperationException {
+        return create(id, baseMaterial, DataComponentMap.EMPTY);
     }
 
     public static Optional<BlocksmithItem> fromStack(ItemStack itemStack) {
