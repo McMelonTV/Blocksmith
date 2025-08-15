@@ -96,6 +96,9 @@ public class BlocksmithBlock implements Keyed {
             meta.setTranslation(new Vec(0.5));
             meta.setScale(Vec.ONE.add(0.001));
             meta.setBrightnessOverride(255);
+            meta.setViewRange(2f);
+            meta.setHeight(1f);
+            meta.setWidth(1f);
 //            displayEntity.setGlowing(true);
             displayEntity.setNoGravity(true);
             displayEntity.setInstance(instance, blockPos);
