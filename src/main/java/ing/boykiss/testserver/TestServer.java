@@ -40,7 +40,7 @@ public class TestServer {
 
             player.setGameMode(GameMode.CREATIVE);
 
-            Optional<ItemStack> optionalItemStack = Items.DIA.createStack(1);
+            Optional<ItemStack> optionalItemStack = Items.STICK.createStack(1);
             optionalItemStack.ifPresent(player.getInventory()::addItemStack);
 
             Pos p1 = new Pos(2, 10, 0);

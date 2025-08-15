@@ -5,5 +5,5 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.item.Material;
 
 public class Items {
-    public static final BlocksmithItem DIA = BlocksmithItem.create(Key.key("ns", "dia"), Material.DIAMOND);
+    public static final BlocksmithItem STICK = BlocksmithItem.create(Key.key("test", "stick"), Material.STICK);
 }
