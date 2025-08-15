@@ -1,5 +1,8 @@
 package ing.boykiss.testserver;
 
+import ing.boykiss.blocksmith.resourcepack.BlocksmithResourcePack;
+import net.kyori.adventure.resource.ResourcePackRequest;
+import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -10,12 +13,15 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.item.ItemStack;
+import team.unnamed.creative.server.ResourcePackServer;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class TestServer {
     public static void main(String[] args) {
         MinecraftServer server = MinecraftServer.init();
+        BlocksmithResourcePack resourcePack = new BlocksmithResourcePack(UUID.randomUUID());
 
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instance = instanceManager.createInstanceContainer();
@@ -27,6 +33,8 @@ public class TestServer {
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             Player player = event.getPlayer();
+            player.sendResourcePacks(ResourcePackRequest.resourcePackRequest().packs(resourcePack.getPackInfo()).prompt(Component.text("You need to download a resource pack to see our custom content")).required(true).replace(true).build());
+
             event.setSpawningInstance(instance);
             player.setRespawnPoint(new Pos(0, 10, 0));
 
@@ -41,6 +49,7 @@ public class TestServer {
             instance.setBlock(p2, Blocks.DISPLAY.getBlock());
         });
 
+        resourcePack.getPackServer().ifPresent(ResourcePackServer::start);
         server.start("127.0.0.1", 25565);
     }
 }
