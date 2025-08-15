@@ -28,7 +28,8 @@ public class TestServer {
 
         instance.setChunkSupplier(LightingChunk::new);
 //        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 10, Block.STONE));
-        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 1, Blocks.DISPLAY.getBlock()));
+//        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 1, Blocks.DISPLAY.getBlock()));
+        instance.setGenerator(unit -> unit.modifier().fillHeight(0, 1, Blocks.SPAWNER.getBlock()));
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
@@ -43,10 +44,12 @@ public class TestServer {
             Optional<ItemStack> optionalItemStack = Items.STICK.createStack(1);
             optionalItemStack.ifPresent(player.getInventory()::addItemStack);
 
-            Pos p1 = new Pos(2, 10, 0);
-            Pos p2 = new Pos(1, 10, 0);
-            instance.setBlock(p1, Blocks.DEFAULT.getBlock());
+            Pos p1 = new Pos(1, 10, 0);
+            Pos p2 = new Pos(2, 10, 0);
+            Pos p3 = new Pos(3, 10, 0);
+            instance.setBlock(p1, Blocks.NORMAL.getBlock());
             instance.setBlock(p2, Blocks.DISPLAY.getBlock());
+            instance.setBlock(p3, Blocks.SPAWNER.getBlock());
         });
 
         resourcePack.getPackServer().ifPresent(ResourcePackServer::start);

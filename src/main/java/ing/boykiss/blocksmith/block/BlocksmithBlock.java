@@ -43,8 +43,11 @@ public class BlocksmithBlock implements Keyed {
         this.shape = shape;
         this.type = type;
 
-        Block block = shape.getBaseBlock().withTag(BLOCKSMITH_BLOCK_ID_TAG, id);
+        Block block = shape.getBaseBlock();
+        if (type == BlockType.SPAWNER) block = Block.SPAWNER;
         if (type == BlockType.DISPLAY) block = block.withHandler(DisplayBlockPlaceHandler.INSTANCE);
+        block = block.withTag(BLOCKSMITH_BLOCK_ID_TAG, id);
+
         this.block = block;
     }
 
@@ -59,7 +62,7 @@ public class BlocksmithBlock implements Keyed {
      * @throws UnsupportedOperationException if id already exists
      */
     public static BlocksmithBlock create(Key id, BlockShape shape) throws UnsupportedOperationException {
-        return create(id, shape, BlockType.DEFAULT);
+        return create(id, shape, BlockType.NORMAL);
     }
 
     public static Optional<BlocksmithBlock> fromBlock(Block block) {
