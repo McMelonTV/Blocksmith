@@ -1,7 +1,5 @@
 package ing.boykiss.testserver;
 
-import ing.boykiss.blocksmith.block.BlocksmithBlock;
-import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -37,14 +35,10 @@ public class TestServer {
             Optional<ItemStack> optionalItemStack = Items.DIA.createStack(1);
             optionalItemStack.ifPresent(player.getInventory()::addItemStack);
 
-            Pos zero = new Pos(0, 0, 0);
-            Pos one = new Pos(1, 1, 1);
-            instance.setBlock(zero, Block.AIR.withTag(BlocksmithBlock.BLOCKSMITH_BLOCK_ID_TAG, Key.key("ns", "test")));
-            instance.setBlock(one, Block.AIR);
-            Key keyZ = instance.getBlock(zero).getTag(BlocksmithBlock.BLOCKSMITH_BLOCK_ID_TAG);
-            Key keyO = instance.getBlock(one).getTag(BlocksmithBlock.BLOCKSMITH_BLOCK_ID_TAG);
-            System.out.println(keyZ == null ? "null" : keyZ.asString());
-            System.out.println(keyO == null ? "null" : keyO.asString());
+            Pos p1 = new Pos(2, 10, 0);
+            Pos p2 = new Pos(1, 10, 0);
+            instance.setBlock(p1, Blocks.DEFAULT.getBlock());
+            instance.setBlock(p2, Blocks.DISPLAY.getBlock());
         });
 
         server.start("127.0.0.1", 25565);
