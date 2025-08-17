@@ -2,7 +2,7 @@ package ing.boykiss.blocksmith;
 
 import ing.boykiss.blocksmith.block.BlockRegistry;
 import ing.boykiss.blocksmith.item.ItemRegistry;
-import ing.boykiss.blocksmith.resourcepack.ResourcePack;
+import ing.boykiss.blocksmith.resourcepack.BlocksmithRP;
 import lombok.Getter;
 
 import java.net.InetSocketAddress;
@@ -15,9 +15,9 @@ public class Blocksmith {
     private final BlockRegistry blockRegistry = new BlockRegistry();
 
     @Getter
-    private final ResourcePack resourcePack;
+    private final BlocksmithRP resourcePack;
 
     public Blocksmith(UUID rpUuid, InetSocketAddress rpHost) {
-        this.resourcePack = new ResourcePack(rpUuid, rpHost);
+        this.resourcePack = new BlocksmithRP(rpUuid, rpHost);
     }
 }

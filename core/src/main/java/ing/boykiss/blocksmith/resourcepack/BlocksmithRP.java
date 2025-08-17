@@ -6,6 +6,7 @@ import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.metadata.pack.PackFormat;
@@ -15,10 +16,9 @@ import team.unnamed.creative.server.ResourcePackServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.Optional;
 import java.util.UUID;
 
-public class ResourcePack {
+public class BlocksmithRP {
     private static final Writable ICON = Writable.resource(Blocksmith.class.getClassLoader(), "blocksmith_icon.png");
 
     private final ResourcePackServer packServer;
@@ -28,7 +28,7 @@ public class ResourcePack {
     @Getter
     private final UUID uuid;
 
-    public ResourcePack(UUID uuid, InetSocketAddress host) {
+    public BlocksmithRP(UUID uuid, InetSocketAddress host) {
         this.uuid = uuid;
 
         team.unnamed.creative.ResourcePack pack = team.unnamed.creative.ResourcePack.resourcePack();
@@ -37,33 +37,41 @@ public class ResourcePack {
 
         /*other stuff*/
 
-        BuiltResourcePack builtPack = buildPack(pack);
-        packServer = createServer(builtPack, host).orElse(null);
-        URI uri = URI.create(packServer != null ? "http://" + host.getHostString() + ":" + host.getPort() : "");
-        packInfo = ResourcePackInfo.resourcePackInfo(uuid, uri, builtPack.hash());
+        BuiltResourcePack builtPack = MinecraftResourcePackWriter.minecraft().build(pack);
+
+        packServer = createServer(builtPack, host);
+        packInfo = ResourcePackInfo.resourcePackInfo(uuid, createURI(host), builtPack.hash());
     }
 
-    private static BuiltResourcePack buildPack(team.unnamed.creative.ResourcePack pack) {
-        return MinecraftResourcePackWriter.minecraft().build(pack);
-    }
-
-    private static Optional<ResourcePackServer> createServer(BuiltResourcePack builtPack, InetSocketAddress host) {
+    private static @Nullable ResourcePackServer createServer(BuiltResourcePack builtPack, InetSocketAddress host) {
         try {
-            return Optional.of(ResourcePackServer.server()
+            return ResourcePackServer.server()
                     .address(host)
                     .pack(builtPack)
-                    .build());
+                    .build();
         } catch (IOException e) {
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }
     }
 
-    public Optional<ResourcePackServer> getPackServer() {
-        return Optional.ofNullable(packServer);
+    private URI createURI(InetSocketAddress host) {
+        return URI.create(packServer != null ? "http://" + host.getHostString() + ":" + host.getPort() : "");
     }
 
-    public void sendToPlayer(Player player, Component prompt, boolean required, boolean replace) {
-        player.sendResourcePacks(ResourcePackRequest.resourcePackRequest().packs(getPackInfo()).prompt(prompt).required(required).replace(replace).build());
+    public void startServer() {
+        if (packServer != null) packServer.start();
+    }
+
+    public void sendToPlayer(Player player, @Nullable Boolean required, @Nullable Boolean replace, @Nullable Component prompt) {
+        ResourcePackRequest.Builder builder = createBaseRequest();
+        if (required != null) builder.required(required);
+        if (replace != null) builder.replace(replace);
+        if (prompt != null) builder.prompt(prompt);
+        player.sendResourcePacks(builder.build());
+    }
+
+    private ResourcePackRequest.Builder createBaseRequest() {
+        return ResourcePackRequest.resourcePackRequest().packs(getPackInfo());
     }
 }
