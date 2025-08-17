@@ -2,23 +2,22 @@ package ing.boykiss.blocksmith;
 
 import ing.boykiss.blocksmith.block.BlockRegistry;
 import ing.boykiss.blocksmith.item.ItemRegistry;
-import ing.boykiss.blocksmith.registry.Registries;
+import ing.boykiss.blocksmith.resourcepack.ResourcePack;
+import lombok.Getter;
 
-public class Blocksmith implements Registries {
+import java.net.InetSocketAddress;
+import java.util.UUID;
+
+public class Blocksmith {
+    @Getter
     private final ItemRegistry itemRegistry = new ItemRegistry();
+    @Getter
     private final BlockRegistry blockRegistry = new BlockRegistry();
 
-    public Blocksmith() {
+    @Getter
+    private final ResourcePack resourcePack;
 
-    }
-
-    @Override
-    public ItemRegistry items() {
-        return itemRegistry;
-    }
-
-    @Override
-    public BlockRegistry blocks() {
-        return blockRegistry;
+    public Blocksmith(UUID rpUuid, InetSocketAddress rpHost) {
+        this.resourcePack = new ResourcePack(rpUuid, rpHost);
     }
 }

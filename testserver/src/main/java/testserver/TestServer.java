@@ -2,7 +2,6 @@ package testserver;
 
 import ing.boykiss.blocksmith.Blocksmith;
 import ing.boykiss.blocksmith.resourcepack.ResourcePack;
-import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -16,15 +15,16 @@ import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.item.ItemStack;
 import team.unnamed.creative.server.ResourcePackServer;
 
+import java.net.InetSocketAddress;
 import java.util.UUID;
 
 public class TestServer {
-    public static Blocksmith BLOCKSMITH = new Blocksmith();
+    public static Blocksmith BLOCKSMITH = new Blocksmith(UUID.randomUUID(), InetSocketAddress.createUnresolved("127.0.0.1", 8888));
 
     public static void main(String[] args) {
         MinecraftServer server = MinecraftServer.init();
 
-        ResourcePack resourcePack = new ResourcePack(UUID.randomUUID());
+        ResourcePack bRP = BLOCKSMITH.getResourcePack();
 
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instance = instanceManager.createInstanceContainer();
@@ -37,7 +37,7 @@ public class TestServer {
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             Player player = event.getPlayer();
-            player.sendResourcePacks(ResourcePackRequest.resourcePackRequest().packs(resourcePack.getPackInfo()).prompt(Component.text("You need to download a resource pack to see our custom content")).required(true).replace(true).build());
+            bRP.sendToPlayer(player, Component.text("You need to download a resource pack to see our custom content"), true, true);
 
             event.setSpawningInstance(instance);
             player.setRespawnPoint(new Pos(0, 10, 0));
@@ -55,7 +55,7 @@ public class TestServer {
             instance.setBlock(p3, Blocks.SPAWNER.getBlock());
         });
 
-        resourcePack.getPackServer().ifPresent(ResourcePackServer::start);
+        bRP.getPackServer().ifPresent(ResourcePackServer::start);
         server.start("127.0.0.1", 25565);
     }
 }

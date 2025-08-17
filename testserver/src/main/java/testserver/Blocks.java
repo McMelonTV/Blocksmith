@@ -7,7 +7,7 @@ import ing.boykiss.blocksmith.block.BlockType;
 import net.kyori.adventure.key.Key;
 
 public class Blocks {
-    private static final BlockRegistry BLOCKS = TestServer.BLOCKSMITH.blocks();
+    private static final BlockRegistry BLOCKS = TestServer.BLOCKSMITH.getBlockRegistry();
 
     public static final BlockDef NORMAL = BLOCKS.create(Key.key("test", "normal"), BlockShape.FULL, BlockType.NORMAL);
     public static final BlockDef DISPLAY = BLOCKS.create(Key.key("test", "display"), BlockShape.FULL, BlockType.DISPLAY);
