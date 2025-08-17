@@ -30,7 +30,7 @@ java {
 tasks {
     jar {
         manifest {
-            attributes["Main-Class"] = "ing.boykiss.testserver.TestServer"
+            attributes["Main-Class"] = "ing.boykiss.blocksmith.Blocksmith"
         }
     }
 

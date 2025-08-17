@@ -1,4 +1,4 @@
-package ing.boykiss.testserver;
+package testserver;
 
 import ing.boykiss.blocksmith.block.BlockShape;
 import ing.boykiss.blocksmith.block.BlockType;

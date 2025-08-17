@@ -1,4 +1,4 @@
-package ing.boykiss.testserver;
+package testserver;
 
 import ing.boykiss.blocksmith.resourcepack.BlocksmithResourcePack;
 import net.kyori.adventure.resource.ResourcePackRequest;

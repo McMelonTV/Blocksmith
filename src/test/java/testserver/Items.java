@@ -1,4 +1,4 @@
-package ing.boykiss.testserver;
+package testserver;
 
 import ing.boykiss.blocksmith.item.BlocksmithItem;
 import net.kyori.adventure.key.Key;
