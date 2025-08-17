@@ -1,6 +1,7 @@
 package testserver;
 
-import ing.boykiss.blocksmith.resourcepack.BlocksmithResourcePack;
+import ing.boykiss.blocksmith.Blocksmith;
+import ing.boykiss.blocksmith.resourcepack.ResourcePack;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
@@ -15,13 +16,15 @@ import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.item.ItemStack;
 import team.unnamed.creative.server.ResourcePackServer;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class TestServer {
+    public static Blocksmith BLOCKSMITH = new Blocksmith();
+
     public static void main(String[] args) {
         MinecraftServer server = MinecraftServer.init();
-        BlocksmithResourcePack resourcePack = new BlocksmithResourcePack(UUID.randomUUID());
+
+        ResourcePack resourcePack = new ResourcePack(UUID.randomUUID());
 
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instance = instanceManager.createInstanceContainer();
@@ -41,8 +44,8 @@ public class TestServer {
 
             player.setGameMode(GameMode.CREATIVE);
 
-            Optional<ItemStack> optionalItemStack = Items.STICK.createStack(1);
-            optionalItemStack.ifPresent(player.getInventory()::addItemStack);
+            ItemStack itemStack = Items.STICK.createStack(1);
+            player.getInventory().addItemStack(itemStack);
 
             Pos p1 = new Pos(1, 10, 0);
             Pos p2 = new Pos(2, 10, 0);

@@ -5,7 +5,6 @@ import lombok.Getter;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.text.Component;
 import team.unnamed.creative.BuiltResourcePack;
-import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.metadata.pack.PackFormat;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -16,7 +15,7 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
-public class BlocksmithResourcePack {
+public class ResourcePack {
     private static final Writable ICON = Writable.resource(Blocksmith.class.getClassLoader(), "blocksmith_icon.png");
 
     private final ResourcePackServer packServer;
@@ -26,10 +25,10 @@ public class BlocksmithResourcePack {
     @Getter
     private final UUID uuid;
 
-    public BlocksmithResourcePack(UUID uuid) {
+    public ResourcePack(UUID uuid) {
         this.uuid = uuid;
 
-        ResourcePack pack = ResourcePack.resourcePack();
+        team.unnamed.creative.ResourcePack pack = team.unnamed.creative.ResourcePack.resourcePack();
         pack.packMeta(PackFormat.format(42), Component.text("Blocksmith Custom Server Resources"));
         pack.icon(ICON);
 
@@ -41,7 +40,7 @@ public class BlocksmithResourcePack {
         packInfo = ResourcePackInfo.resourcePackInfo(uuid, uri, builtPack.hash());
     }
 
-    private static BuiltResourcePack buildPack(ResourcePack pack) {
+    private static BuiltResourcePack buildPack(team.unnamed.creative.ResourcePack pack) {
         return MinecraftResourcePackWriter.minecraft().build(pack);
     }
 

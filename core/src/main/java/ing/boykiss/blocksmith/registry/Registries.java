@@ -1,14 +1,10 @@
 package ing.boykiss.blocksmith.registry;
 
-import ing.boykiss.blocksmith.block.BlocksmithBlock;
-import ing.boykiss.blocksmith.item.BlocksmithItem;
+import ing.boykiss.blocksmith.block.BlockRegistry;
+import ing.boykiss.blocksmith.item.ItemRegistry;
 
-public final class Registries {
-    public static Registry<BlocksmithItem> items() {
-        return BlocksmithItem.ITEMS;
-    }
+public interface Registries {
+    ItemRegistry items();
 
-    public static Registry<BlocksmithBlock> blocks() {
-        return BlocksmithBlock.BLOCKS;
-    }
+    BlockRegistry blocks();
 }

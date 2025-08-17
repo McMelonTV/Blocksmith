@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class Registry<T extends Keyed> {
+public abstract sealed class Registry<T extends Keyed> permits DynamicRegistry, StaticRegistry {
     protected final @NotNull Map<@NotNull Key, @NotNull T> dataMap;
 
     protected Registry(@NotNull Map<@NotNull Key, @NotNull T> data) {

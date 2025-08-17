@@ -1,6 +1,5 @@
 package ing.boykiss.blocksmith.item;
 
-import ing.boykiss.blocksmith.registry.DynamicRegistry;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import net.kyori.adventure.text.Component;
@@ -13,11 +12,8 @@ import net.minestom.server.tag.Tag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.Optional;
 
-public class BlocksmithItem implements Keyed {
-    public static final DynamicRegistry<BlocksmithItem> ITEMS = new DynamicRegistry<>();
-
+public final class ItemDef implements Keyed {
     public static final Tag<@NotNull String> BLOCKSMITH_ITEM_ID_RAW_TAG = Tag.String("blocksmith_item_id");
     public static final Tag<@NotNull Key> BLOCKSMITH_ITEM_ID_TAG = BLOCKSMITH_ITEM_ID_RAW_TAG.map(Key::key, Key::asString);
 
@@ -25,37 +21,15 @@ public class BlocksmithItem implements Keyed {
     private final Material baseMaterial;
     private final DataComponentMap baseComponents;
 
-    private BlocksmithItem(Key id, Material baseMaterial, DataComponentMap baseComponents) {
+    ItemDef(Key id, Material baseMaterial, DataComponentMap baseComponents) {
         this.id = id;
         this.baseMaterial = baseMaterial;
         this.baseComponents = baseComponents;
     }
 
-    /**
-     * @throws UnsupportedOperationException if id already exists
-     */
-    public static BlocksmithItem create(Key id, Material baseMaterial, DataComponentMap baseComponents) throws UnsupportedOperationException {
-        return ITEMS.register(new BlocksmithItem(id, baseMaterial, baseComponents));
-    }
-
-    /**
-     * @throws UnsupportedOperationException if id already exists
-     */
-    public static BlocksmithItem create(Key id, Material baseMaterial) throws UnsupportedOperationException {
-        return create(id, baseMaterial, DataComponentMap.EMPTY);
-    }
-
-    public static Optional<BlocksmithItem> fromStack(ItemStack itemStack) {
-        return ITEMS.get(itemStack.getTag(BLOCKSMITH_ITEM_ID_TAG));
-    }
-
-    public Optional<ItemStack> createStack(int amount) {
-        Optional<BlocksmithItem> blocksmithItem = ITEMS.get(id);
-        return blocksmithItem.map(item -> item.createStackInternal(amount));
-    }
 
     @SuppressWarnings("unchecked")
-    private ItemStack createStackInternal(int amount) {
+    public ItemStack createStack(int amount) {
         ItemStack.Builder builder = ItemStack.builder(baseMaterial);
         builder.amount(amount);
         builder.set(DataComponents.ITEM_NAME, Component.translatable("item." + id.value() + ".name"));

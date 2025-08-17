@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class DynamicRegistry<T extends Keyed> extends Registry<T> {
+public abstract non-sealed class DynamicRegistry<T extends Keyed> extends Registry<T> {
     /**
      * Allows setting (overriding) values of existing keys
      */
