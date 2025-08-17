@@ -18,7 +18,7 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 public class TestServer {
-    public static Blocksmith BLOCKSMITH = new Blocksmith(UUID.randomUUID(), InetSocketAddress.createUnresolved("127.0.0.1", 8888));
+    public static Blocksmith BLOCKSMITH = new Blocksmith(UUID.randomUUID(), new InetSocketAddress("127.0.0.1", 8888));
     public static BlocksmithRP BLOCKSMITH_RP = BLOCKSMITH.getResourcePack();
 
     public static void main(String[] args) {
