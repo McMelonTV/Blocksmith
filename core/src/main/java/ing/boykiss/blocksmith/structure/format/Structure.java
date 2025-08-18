@@ -1,4 +1,6 @@
-package ing.boykiss.blocksmith.structure;
+package ing.boykiss.blocksmith.structure.format;
+
+import ing.boykiss.blocksmith.structure.StructureData;
 
 import java.io.InputStream;
 import java.io.OutputStream;
