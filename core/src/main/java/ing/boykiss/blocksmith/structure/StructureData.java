@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Note: Negative values wont work
+
 /**
  * IMPORTANT: This class is not very efficient for regular usage and should therefore only be used for Serialization/Deserialization.
  * For other uses please use the Structure class.
@@ -30,12 +32,12 @@ import java.util.Map;
  * @see Structure
  */
 public record StructureData(
-        int[] size,
-        int[][] blocks,
-        String[] namespacePalette,
-        Value.KeyValue<Value.IntValue>[] blockPalette,
-        Value.KeyValue<?>[][] statePalette,
-        CompoundBinaryTag[] nbtPalette
+        int @NotNull [] size,
+        int @NotNull [] @NotNull [] blocks,
+        @NotNull String[] namespacePalette,
+        @NotNull Value.KeyValue<Value.IntValue>[] blockPalette,
+        @NotNull Value.KeyValue<?>[][] statePalette,
+        @NotNull CompoundBinaryTag[] nbtPalette
 ) {
     public static final int BLOCKDATA_INDEX_X = 0;
     public static final int BLOCKDATA_INDEX_Y = 1;
@@ -45,7 +47,7 @@ public record StructureData(
     public static final int BLOCKDATA_INDEX_NBT = 5;
 
     public @NotNull BlockVec getSize() {
-        return new BlockVec(size[BLOCKDATA_INDEX_X], size[BLOCKDATA_INDEX_Y], size[BLOCKDATA_INDEX_Z]);
+        return new BlockVec(size[0], size[1], size[2]);
     }
 
     public @Nullable Block getBlock(@NotNull BlockVec pos, @Nullable BlockRegistry customBlockRegistry) {
@@ -66,6 +68,19 @@ public record StructureData(
         }
 
         return list;
+    }
+
+    public @NotNull Map<@NotNull BlockVec, @NotNull Block> asBlockMap(@Nullable BlockRegistry customBlockRegistry) {
+        Map<BlockVec, Block> map = new HashMap<>((int) (blocks.length / 0.75 + 1)); // hashmap load factor
+
+        for (int[] blockData : blocks) {
+            Block block = toBlock(blockData, customBlockRegistry);
+            if (block != null) {
+                map.put(getBlockPos(blockData), block);
+            }
+        }
+
+        return map;
     }
 
     private @Nullable Block toBlock(int @NotNull [] blockData, @Nullable BlockRegistry customBlockRegistry) {
@@ -98,9 +113,9 @@ public record StructureData(
     private int @Nullable [] getBlockData(@NotNull BlockVec pos) {
         int[] blockPos = new int[]{pos.blockX(), pos.blockY(), pos.blockZ()};
         for (int[] blockData : blocks) {
-            if (blockData[BLOCKDATA_INDEX_X] != blockPos[BLOCKDATA_INDEX_X]
-                    || blockData[BLOCKDATA_INDEX_Y] != blockPos[BLOCKDATA_INDEX_Y]
-                    || blockData[BLOCKDATA_INDEX_Z] != blockPos[BLOCKDATA_INDEX_Z])
+            if (blockData[BLOCKDATA_INDEX_X] != blockPos[0]
+                    || blockData[BLOCKDATA_INDEX_Y] != blockPos[1]
+                    || blockData[BLOCKDATA_INDEX_Z] != blockPos[2])
                 continue;
             return blockData;
         }
