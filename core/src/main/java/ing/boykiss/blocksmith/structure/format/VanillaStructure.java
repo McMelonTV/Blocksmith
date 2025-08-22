@@ -1,28 +1,38 @@
 package ing.boykiss.blocksmith.structure.format;
 
-import ing.boykiss.blocksmith.structure.StructureData;
+import ing.boykiss.blocksmith.structure.Structure;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class VanillaStructure implements NBTStructure {
+public class VanillaStructure implements NBTStructureFormat {
     @Override
-    public StructureData fromSNBT(String snbt) {
-        return null;
+    public VanillaStructure fromSNBT(String snbt) {
+        return null; // TODO
     }
 
     @Override
-    public String toSNBT(StructureData structure) {
-        return "";
+    public String toSNBT() {
+        return ""; // TODO
     }
 
     @Override
-    public StructureData load(InputStream in) {
-        return null;
+    public VanillaStructure read(InputStream in) {
+        return null; // TODO
     }
 
     @Override
-    public void write(StructureData structure, OutputStream out) {
+    public void write(OutputStream out) {
+        // TODO
+    }
 
+    @Override
+    public VanillaStructure fromStructure(Structure structure) {
+        return null; // TODO
+    }
+
+    @Override
+    public Structure toStructure() {
+        return null; // TODO
     }
 }

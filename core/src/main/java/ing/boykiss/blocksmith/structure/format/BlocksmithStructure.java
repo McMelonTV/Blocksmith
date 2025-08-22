@@ -1,7 +1,8 @@
-package ing.boykiss.blocksmith.structure;
+package ing.boykiss.blocksmith.structure.format;
 
 import ing.boykiss.blocksmith.block.BlockDef;
 import ing.boykiss.blocksmith.block.BlockRegistry;
+import ing.boykiss.blocksmith.structure.Structure;
 import ing.boykiss.blocksmith.util.Value;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
@@ -12,52 +13,48 @@ import org.javatuples.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Note: Negative values wont work
-
 /**
- * IMPORTANT: This class is not very efficient for regular usage and should therefore only be used for Serialization/Deserialization.
- * For other uses please use the Structure class.
- *
  * @param size             [x,y,z]
  * @param blocks           [[x,y,z,blockIndex,stateIndex,nbtIndex],...]
  * @param namespacePalette ["minecraft","somemod",...]
  * @param blockPalette     [{"oak_leaves":0},{"someblock":1},...]
  * @param statePalette     [[{"waterlogged":true},{"persistent":true}],...]
  * @param nbtPalette       [{__block_data__},...]
- * @see Structure
  */
-public record StructureData(
+public record BlocksmithStructure(
         int @NotNull [] size,
         int @NotNull [] @NotNull [] blocks,
         @NotNull String[] namespacePalette,
         @NotNull Value.KeyValue<Value.IntValue>[] blockPalette,
         @NotNull Value.KeyValue<?>[][] statePalette,
         @NotNull CompoundBinaryTag[] nbtPalette
-) {
-    public static final int BLOCKDATA_INDEX_X = 0;
-    public static final int BLOCKDATA_INDEX_Y = 1;
-    public static final int BLOCKDATA_INDEX_Z = 2;
-    public static final int BLOCKDATA_INDEX_BLOCK = 3;
-    public static final int BLOCKDATA_INDEX_STATE = 4;
-    public static final int BLOCKDATA_INDEX_NBT = 5;
+) implements StructureFormat {
+    private static final int BLOCKDATA_INDEX_X = 0;
+    private static final int BLOCKDATA_INDEX_Y = 1;
+    private static final int BLOCKDATA_INDEX_Z = 2;
+    private static final int BLOCKDATA_INDEX_BLOCK = 3;
+    private static final int BLOCKDATA_INDEX_STATE = 4;
+    private static final int BLOCKDATA_INDEX_NBT = 5;
 
-    public @NotNull BlockVec getSize() {
+    private @NotNull BlockVec getSize() {
         return new BlockVec(size[0], size[1], size[2]);
     }
 
-    public @Nullable Block getBlock(@NotNull BlockVec pos, @Nullable BlockRegistry customBlockRegistry) {
+    private @Nullable Block getBlock(@NotNull BlockVec pos, @Nullable BlockRegistry customBlockRegistry) {
         int[] blockData = getBlockData(pos);
         if (blockData == null) return null;
 
         return toBlock(blockData, customBlockRegistry);
     }
 
-    public @NotNull List<Pair<@NotNull BlockVec, @NotNull Block>> asBlockList(@Nullable BlockRegistry customBlockRegistry) {
+    private @NotNull List<Pair<@NotNull BlockVec, @NotNull Block>> asBlockList(@Nullable BlockRegistry customBlockRegistry) {
         List<Pair<BlockVec, Block>> list = new ArrayList<>(blocks.length);
 
         for (int[] blockData : blocks) {
@@ -70,7 +67,7 @@ public record StructureData(
         return list;
     }
 
-    public @NotNull Map<@NotNull BlockVec, @NotNull Block> asBlockMap(@Nullable BlockRegistry customBlockRegistry) {
+    private @NotNull Map<@NotNull BlockVec, @NotNull Block> asBlockMap(@Nullable BlockRegistry customBlockRegistry) {
         Map<BlockVec, Block> map = new HashMap<>((int) (blocks.length / 0.75 + 1)); // hashmap load factor
 
         for (int[] blockData : blocks) {
@@ -120,5 +117,25 @@ public record StructureData(
             return blockData;
         }
         return null;
+    }
+
+    @Override
+    public BlocksmithStructure read(InputStream in) {
+        return null; // TODO
+    }
+
+    @Override
+    public void write(OutputStream out) {
+        // TODO
+    }
+
+    @Override
+    public BlocksmithStructure fromStructure(Structure structure) {
+        return null; // TODO
+    }
+
+    @Override
+    public Structure toStructure() {
+        return null; // TODO
     }
 }

@@ -1,8 +1,5 @@
 package ing.boykiss.blocksmith.structure;
 
-import ing.boykiss.blocksmith.block.BlockRegistry;
-import ing.boykiss.blocksmith.util.Value;
-import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.batch.BatchOption;
@@ -28,23 +25,6 @@ public class Structure {
 
     public Structure() {
         this.blocks = new HashMap<>();
-    }
-
-    public static @NotNull Structure fromStructureData(@NotNull StructureData structureData, @Nullable BlockRegistry customBlockRegistry) {
-        return new Structure(structureData.asBlockMap(customBlockRegistry), structureData.getSize());
-    }
-
-    public @NotNull StructureData toStructureData() {
-        // TODO i cba to implement this rn
-        int[] size = new int[]{this.size.blockX(), this.size.blockY(), this.size.blockZ()};
-        int[][] blocks = null;
-        String[] namespacePalette = null;
-        Value.KeyValue<Value.IntValue>[] blockPalette = null;
-        Value.KeyValue<?>[][] statePalette = null;
-        CompoundBinaryTag[] nbtPalette = null;
-
-//        return new StructureData(size, blocks, namespacePalette, blockPalette, statePalette, nbtPalette);
-        return null;
     }
 
     public @Nullable Block getBlock(@NotNull BlockVec localPos) {
